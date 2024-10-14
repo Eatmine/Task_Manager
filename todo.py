@@ -14,10 +14,17 @@ def add(task: str, category:str, description:str):
 def delete(position:int):
     typer.echo(f"deleting {position}")
 
-
 @app.command()
 def update(position:int, task:str = None, category:str = None, description:str=None):
     typer.echo(f"updating {position}")
+
+@app.command()
+def complete(position:int):
+    typer.echo(f"complete {position}")
+
+
+
+
 
 
 
