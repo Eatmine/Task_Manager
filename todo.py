@@ -10,6 +10,10 @@ app = typer.Typer()
 def add(task: str, category:str, description:str):
     typer.echo(f"adding {task}, {category}, {description}")
 
+@app.command()
+def delete(position:int):
+    typer.echo(f"deleting {position}")
+
 
 
 
