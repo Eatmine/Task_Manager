@@ -13,34 +13,38 @@ app = typer.Typer()
 def add(task: str, category:str, description:str, date_assigned:str, priority:str):
     format = '%b %d %Y %I:%M%p'
     date_assigned = datetime.datetime.strptime(date_assigned, format)
-    print(f"adding {task}, {category}, {description} , {date_assigned}, {priority}")
+    typer.echo(f"adding {task}, {category}, {description} , {date_assigned}, {priority}")
+    show()
 
 @app.command()
 def delete(position:int):
-    print(f"deleting {position}")
+    typer.echo(f"deleting {position}")
+    show()
 
 @app.command()
 def update(position:int, task: Optional[str] = None, category: Optional[str] = None, description: Optional[str] = None, 
-date_assigned: Optional[str] = None, priority: Optional[str] = None       ):
-    print(f"updating {position}")
+date_assigned: Optional[str] = None, priority: Optional[str] = None):
+    typer.echo(f"updating {position}")
+    show()
 
 @app.command()
 def complete(position:int):
-    print(f"complete {position}")
+    typer.echo(f"complete {position}")
+    show()
 
 @app.command()
 def show():
     tasks = [("Apply to Apprenticeship", "LinkedIn", "Fill Out The Application by 10/15", "Oct 09 2024 9:00AM", "HIGH")]
     console.print("[bold magenta]Todos!", "💻")
 
-    table = Table(show_header=True, header_style="bold_blue")
+    table = Table(show_header=True, header_style="blue1")
     table.add_column("#", style="dim", width=6)
-    table.add_column("Task", width=6, justify="center")
-    table.add_column("Category", width=6, justify="center")
-    table.add_column("Description", width=6, justify="center")
-    table.add_column("Date Assigned", width=6, justify="center")
-    table.add_column("Priority", width=6, justify="center")
-    table.add_column("Complete", width=6, justify="center")
+    table.add_column("Task", width=13, justify="center")
+    table.add_column("Category", width=13, justify="center")
+    table.add_column("Description", width=13, justify="center")
+    table.add_column("Date Assigned", width=13, justify="center")
+    table.add_column("Priority", width=13, justify="center")
+    table.add_column("Complete", width=13, justify="center")
 
     def get_priority_color(priority):
         COLORS = {"HIGH": "red", "MEDIUM": "dark_orange", "LOW": "yellow1"}
@@ -55,19 +59,6 @@ def show():
         table.add_row(str(idx), task[0], task[1], task[2], task[3], f'[{c}]{task[4]}[/{c}]', is_done_str)
     
     console.print(table)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
