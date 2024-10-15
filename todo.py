@@ -3,6 +3,8 @@ from rich.console import Console
 from rich.table import Table
 from typing import Optional
 import datetime
+from model import Todo
+from db import get_all_todos, delete_todo, insert_todo, complete_todo, update_todo
 
 
 console = Console()
