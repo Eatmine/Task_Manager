@@ -13,22 +13,22 @@ def create_table():
     description text,
     date_assigned text,
     priority text,
-    date_completed
+    date_completed text,
     status integer,
-    position integer,
+    position integer
     )""")
 
 create_table()
 
 def insert_todo(todo:Todo):
     c.execute("select count(*) FROM todos")
-    count = c.fetchonee()[0]
+    count = c.fetchone()[0]
     todo.position = count if count else 0
     data = {"task": todo.task, "category": todo.category, "description" : todo.description,
             "date_assigned": todo.date_assigned, "priority":todo.priority, "date_completed": todo.date_completed,
             "status":todo.status, "position": todo.position}
     with connect:
-        c.execute("INSERT INTO todos VALUES (:task, :category, :description, :date_assigned, :date_completed, :status, :position)",data)
+        c.execute("INSERT INTO todos VALUES (:task, :category, :description, :date_assigned,:priority, :date_completed, :status, :position)",data)
 
 def get_all_todos() -> List[Todo]:
     c.execute("select * from todos")

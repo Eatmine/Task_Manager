@@ -16,27 +16,32 @@ def add(task: str, category:str, description:str, date_assigned:str, priority:st
     format = '%b %d %Y %I:%M%p'
     date_assigned = datetime.datetime.strptime(date_assigned, format)
     typer.echo(f"adding {task}, {category}, {description} , {date_assigned}, {priority}")
+    todo = Todo(task,category,description,date_assigned,priority)
+    insert_todo(todo)
     show()
 
 @app.command()
 def delete(position:int):
     typer.echo(f"deleting {position}")
+    delete_todo(position)
     show()
 
 @app.command()
 def update(position:int, task: Optional[str] = None, category: Optional[str] = None, description: Optional[str] = None, 
 date_assigned: Optional[str] = None, priority: Optional[str] = None):
     typer.echo(f"updating {position}")
+    update_todo(position = position,task=task,category=category,description=description,priority=priority,date_assigned=date_assigned)
     show()
 
 @app.command()
 def complete(position:int):
     typer.echo(f"complete {position}")
+    complete_todo(position)
     show()
 
 @app.command()
 def show():
-    tasks = [("Apply to Apprenticeship", "LinkedIn", "Fill Out The Application by 10/15", "Oct 09 2024 9:00AM", "HIGH")]
+    tasks = get_all_todos()
     console.print("[bold magenta]Todos!", "💻")
 
     table = Table(show_header=True, header_style="blue1")
@@ -49,16 +54,16 @@ def show():
     table.add_column("Complete", width=13, justify="center")
 
     def get_priority_color(priority):
-        COLORS = {"HIGH": "red", "MEDIUM": "dark_orange", "LOW": "yellow1"}
+        COLORS = {"HIGH": "red", "MEDIUM": "dark_orange", "LOW": "cyan"}
         if priority in COLORS:
             return COLORS[priority]
         else:
             return "white"
 
     for idx, task in enumerate(tasks,start=0):
-        c = get_priority_color(task[-1])
-        is_done_str = "✅" if True ==2 else "❌"
-        table.add_row(str(idx), task[0], task[1], task[2], task[3], f'[{c}]{task[4]}[/{c}]', is_done_str)
+        c = get_priority_color(task.priority)
+        is_done_str = "✅" if task.status == 2 else "❌"
+        table.add_row(str(idx), task.task, task.category, task.description, task.date_assigned, f'[{c}]{task.priority}[/{c}]', is_done_str)
     
     console.print(table)
 
